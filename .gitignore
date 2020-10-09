@@ -1,0 +1,8 @@
+#Project configuration
+/.idea
+
+#Modules dir
+/node_modules
+
+#Env settings
+.env
