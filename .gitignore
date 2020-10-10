@@ -4,5 +4,7 @@
 #Modules dir
 /node_modules
 
-#Env settings
-.env
+#Configs
+configs/.env
+configs/JWTConfig.js
+configs/nodemailerConfig.js
