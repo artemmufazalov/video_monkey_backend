@@ -2,8 +2,11 @@ import UserModel from "../models/User.js";
 import validate from "../utils/validate.js";
 import mailer from "../core/mailer.js";
 import {findByCredentials, generateAuthToken} from "../models/User.js";
+import developmentConfigs from "../../configs/developmentConfigs.js";
 
 //TODO: add methods for changing password, email or userName
+
+const configs = process.env.NODE_ENV === "production" ? {} : developmentConfigs;
 
 const createConfirmationEmailObject = (emailFrom, emailTo, userName, hash) => {
 
@@ -28,7 +31,7 @@ const createConfirmationEmailObject = (emailFrom, emailTo, userName, hash) => {
                      </div>`,
         attachments: [{
             filename: 'image.png',
-            path: "../video_monkey_backend/src/assets/EmailFooter.png",
+            path: `${process.env.INIT_CWD}/src/assets/EmailFooter.png`,
             cid: 'companyCardPng'
         }]
     }
@@ -55,7 +58,7 @@ class UserController {
 
         let errors = validate(postData);
         if (errors.mail || errors.password || errors.name) {
-            res.status(401)
+            return res.status(401)
                 .json({
                     message: "Values didn't pass the validation",
                     errors: errors,
@@ -66,17 +69,18 @@ class UserController {
 
             user.save()
                 .then((user) => {
-                    mailer.sendMail(createConfirmationEmailObject(process.env.VM_NODEMAILER_USER, postData.email, user.name, user.confirmation_hash),
+                    let hostEmail = process.env.NODE_ENV === "production" ? process.env.VM_NODEMAILER_USER : configs.VM_NODEMAILER_USER;
+                    mailer.sendMail(createConfirmationEmailObject(hostEmail, postData.email, user.name, user.confirmation_hash),
                         (err, info) => {
                             if (err) {
-                                res.status(500).json({
+                                return res.status(500).json({
                                     message: "User created successfully",
                                     nextMessage: "Some server error, email was not sent",
                                     user: {...user._doc, _id: "", password: "", tokens: []},
                                     resultCode: 1,
                                 });
                             } else {
-                                res.status(200).json({
+                                return res.status(200).json({
                                     message: "User created successfully",
                                     nextMessage: "Email confirmation is required",
                                     user: {...user._doc, _id: "", password: "", tokens: []},
@@ -87,7 +91,7 @@ class UserController {
                     );
                 })
                 .catch((err) => {
-                    res.status(500)
+                    return res.status(500)
                         .json({
                             message: "Some error occurred",
                             error: err,
@@ -178,8 +182,6 @@ class UserController {
         }
     }
 
-    //TODO: complete methods below
-
     cancelRegistration = (req, res) => {
         const confirmationHash = req.query.hash;
 
@@ -238,7 +240,8 @@ class UserController {
                         resultCode: 1
                     });
             } else {
-                mailer.sendMail(createConfirmationEmailObject(process.env.VM_NODEMAILER_USER, postData.email, postData.name, user.confirmation_hash),
+                let hostEmail = process.env.NODE_ENV === "production" ? process.env.VM_NODEMAILER_USER : configs.VM_NODEMAILER_USER;
+                mailer.sendMail(createConfirmationEmailObject(hostEmail, postData.email, postData.name, user.confirmation_hash),
                     (err, info) => {
                         if (err) {
                             res.status(500).json({

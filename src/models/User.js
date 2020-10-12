@@ -2,6 +2,9 @@ import mongoose from "mongoose";
 import validator from "validator";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import developmentConfigs from "../../configs/developmentConfigs.js";
+
+const configs = process.env.NODE_ENV === "production" ? {} : developmentConfigs;
 
 const UserSchema = new mongoose.Schema({
     email: {
@@ -45,8 +48,12 @@ UserSchema.pre('save', async function (next) {
 
 export const generateAuthToken = (user) => {
     // Generate an auth token for the user
-    const token = jwt.sign({_id: user._id}, process.env.VM_JWT_KEY, {
-        expiresIn: process.env.VM_JWT_MAX_AGE,
+
+    let jwtKey = process.env.NODE_ENV === "production" ? process.env.VM_JWT_KEY : configs.VM_JWT_KEY;
+    let jwtMaxAge = process.env.NODE_ENV === "production" ? process.env.VM_JWT_MAX_AGE : configs.VM_JWT_MAX_AGE;
+
+    const token = jwt.sign({_id: user._id}, jwtKey, {
+        expiresIn: jwtMaxAge,
         algorithm: 'HS256'
     })
     console.log(token);
