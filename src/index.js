@@ -24,6 +24,6 @@ app.get("/user/verify", User.verify);
 app.delete("/user/verify", User.cancelRegistration);
 app.post("/user/verify/email", User.resendEmail)
 
-app.listen(process.env.VM_PORT, () => {
-    console.log("Server started at port " + process.env.VM_PORT);
+app.listen(process.env.PORT || 6000, () => {
+    console.log("Server started at port " + process.env.PORT || 6000);
 });
