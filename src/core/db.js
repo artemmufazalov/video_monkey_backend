@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-mongoose.connect("mongodb://localhost:27017/video_monkey",
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/video_monkey",
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
