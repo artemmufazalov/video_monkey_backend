@@ -16,7 +16,7 @@ Then use `npm install` to install all necessary modules to run the app.
 ```
 npm install
 ```
-##Configs
+## Configs
 To run this app you need first initialize env variables in .env file, that by default should be located in src/configs.<br>
 Those variables include Nodemailer configs, configs for JWT and general server settings.<br>
 Sample .env file:
