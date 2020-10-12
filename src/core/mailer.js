@@ -1,14 +1,13 @@
 import nodemailer from 'nodemailer';
-import config from "../../configs/nodemailerConfig.js";
 
 const options = {
-    host: config.NODEMAILER_HOST,
-    port: config.NODEMAILER_PORT,
+    host: process.env.VM_NODEMAILER_HOST,
+    port: process.env.VM_NODEMAILER_PORT,
     secure: true,
     requireTLS: true,
     auth: {
-        user: config.NODEMAILER_USER,
-        pass: config.NODEMAILER_PASS
+        user: process.env.VM_NODEMAILER_USER,
+        pass: process.env.VM_NODEMAILER_PASS
     },
     logger: true
 };

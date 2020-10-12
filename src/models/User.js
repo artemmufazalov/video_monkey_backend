@@ -3,8 +3,6 @@ import validator from "validator";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
-import config from "../../configs/JWTConfig.js";
-
 const UserSchema = new mongoose.Schema({
     email: {
         type: String,
@@ -39,7 +37,7 @@ UserSchema.pre('save', async function (next) {
         return next();
     }
     if(!user.confirmation_hash){
-        user.confirmation_hash = await bcrypt.hash(new Date().toString(), 10);
+        user.confirmation_hash = await bcrypt.hash(user.email + new Date().toString(), 10);
     }
     user.password = await bcrypt.hash(user.password, 8);
     next();
@@ -47,8 +45,8 @@ UserSchema.pre('save', async function (next) {
 
 export const generateAuthToken = (user) => {
     // Generate an auth token for the user
-    const token = jwt.sign({_id: user._id}, config.JWT_KEY, {
-        expiresIn: config.JWT_MAX_AGE,
+    const token = jwt.sign({_id: user._id}, process.env.VM_JWT_KEY, {
+        expiresIn: process.env.VM_JWT_MAX_AGE,
         algorithm: 'HS256'
     })
     console.log(token);

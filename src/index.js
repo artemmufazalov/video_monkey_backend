@@ -9,21 +9,26 @@ import "./core/db.js";
 
 const app = express();
 
-dotenv.config();
+if (process.env.NODE_ENV !== 'production') {
+    dotenv.config({path: './configs/.env'});
+}
 
 app.use(bodyParser.json());
 app.use(checkIsAuth);
 
 const User = new UserController();
 
+app.post("/user/register", User.create);
 app.delete("/user", User.delete);
 
 app.get("/user/me", User.authMe);
-app.post("/user/signin", User.signin);
+app.post("/user/login", User.login);
 app.delete("/user/logout", User.logout);
-app.post("/user/signup", User.create);
-app.get("/user/verify", User.verify);
 
-app.listen(process.env.PORT || 5000, () => {
-    console.log("Server started at port " + process.env.PORT || 5000);
+app.get("/user/verify", User.verify);
+app.delete("/user/verify", User.cancelRegistration);
+app.post("/user/verify/email", User.resendEmail)
+
+app.listen(process.env.PORT || 6000, () => {
+    console.log("Server started at port " + process.env.VM_PORT || 6000);
 });

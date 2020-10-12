@@ -5,6 +5,8 @@
 /node_modules
 
 #Configs
+configs
 configs/.env
-configs/JWTConfig.js
-configs/nodemailerConfig.js
+
+#other
+other
