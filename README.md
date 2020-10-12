@@ -1,4 +1,4 @@
-#Video Monkey server
+# Video Monkey server
 
 It is a backend part for [Video Monkey Website](https://artemmufazalov.github.io/video_monkey).
 
