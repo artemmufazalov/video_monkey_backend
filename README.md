@@ -17,34 +17,42 @@ Then use `npm install` to install all necessary modules to run the app
 npm install
 ```
 ## Configs
-To run this app you need first initialize configuration variables in developmentConfigs.js file, that by default should be located in src/configs.
-Those variables include Nodemailer configs, configs for JWT and general server settings.
-Sample developmentConfigs.js file:
+To run this app you need first initialize configuration variables in .env file, that by default should be located in src/configs.
+Those variables include Nodemailer, MongoDB and JWT configs, general server settings.
+Sample .env file:
 ### `general settings`
 ```
-"NODE_ENV":"development",
-"PORT":"port number (e.g. to run the app on localhost://5000 should be set to 5000)"
+NODE_ENV=development / production
+PORT=port number (e.g. to run the app on localhost://5000 should be set to 5000)
 ```
 ### `jwt configs`
 ```
-"JWT_KEY":"your jwt key",
-"JWT_MAX_AGE":"your desired jwt expiration time"
+JWT_KEY=your jwt key
+JWT_MAX_AGE=your desired jwt expiration time (7d - 7 days)
 ```
 ### `Nodemailer configs`
 ```
-"NODEMAILER_HOST":"email host uri",
-"NODEMAILER_SERVICE_NAME":"service name",
-"NODEMAILER_USER":"your service user name or email address",
-"NODEMAILER_PASS":"your password",
-"NODEMAILER_PORT":"port number"
+NODEMAILER_HOST=email host uri (e.g. smtp.gmail.com)
+NODEMAILER_SERVICE_NAME=service name (e.g. gmail)
+NODEMAILER_USER=your service user name or email address
+NODEMAILER_PASS=your password
+NODEMAILER_PORT=port number
+```
+### `MongoDB configs`
+```
+MONGODB_URI=url to access your remote MongoDB instance
 ```
 For the production build variables will be initialized as environment variables.
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `npm run start`
+### `npm run start_dev`
 
 Runs a development server on localhost://(port number in configuration file).
 
 The app uses nodemon, so it will automatically reload if you make any edits.
+
+### `npm run start`
+
+Runs production server, where variables should be initialized as environment variables

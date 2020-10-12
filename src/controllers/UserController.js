@@ -2,11 +2,8 @@ import UserModel from "../models/User.js";
 import validate from "../utils/validate.js";
 import mailer from "../core/mailer.js";
 import {findByCredentials, generateAuthToken} from "../models/User.js";
-import developmentConfigs from "../../configs/developmentConfigs.js";
 
 //TODO: add methods for changing password, email or userName
-
-const configs = process.env.NODE_ENV === "production" ? {} : developmentConfigs;
 
 const createConfirmationEmailObject = (emailFrom, emailTo, userName, hash) => {
 
@@ -69,8 +66,7 @@ class UserController {
 
             user.save()
                 .then((user) => {
-                    let hostEmail = process.env.NODE_ENV === "production" ? process.env.VM_NODEMAILER_USER : configs.VM_NODEMAILER_USER;
-                    mailer.sendMail(createConfirmationEmailObject(hostEmail, postData.email, user.name, user.confirmation_hash),
+                    mailer.sendMail(createConfirmationEmailObject(process.env.VM_NODEMAILER_USER, postData.email, user.name, user.confirmation_hash),
                         (err, info) => {
                             if (err) {
                                 return res.status(500).json({
@@ -240,8 +236,7 @@ class UserController {
                         resultCode: 1
                     });
             } else {
-                let hostEmail = process.env.NODE_ENV === "production" ? process.env.VM_NODEMAILER_USER : configs.VM_NODEMAILER_USER;
-                mailer.sendMail(createConfirmationEmailObject(hostEmail, postData.email, postData.name, user.confirmation_hash),
+                mailer.sendMail(createConfirmationEmailObject(process.env.VM_NODEMAILER_USER, postData.email, postData.name, user.confirmation_hash),
                     (err, info) => {
                         if (err) {
                             res.status(500).json({

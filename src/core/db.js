@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 
-mongoose.connect(process.env.NODE_ENV === "production" ? process.env.MONGODB_URI : "mongodb://localhost:27017/video_monkey",
+const mongoURI = process.env.NODE_ENV === "production" ? process.env.MONGODB_URI : "mongodb://localhost:27017/video_monkey";
+
+mongoose.connect(mongoURI,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -8,7 +10,7 @@ mongoose.connect(process.env.NODE_ENV === "production" ? process.env.MONGODB_URI
         useFindAndModify: false
     })
     .then(() => {
-        console.log("Database connection was established successfully")
+        console.log("Database connection was established successfully: " + mongoURI)
     })
     .catch((error) => {
         console.log("Cannot connect to the database, " + error);
