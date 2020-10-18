@@ -2,11 +2,13 @@
 
 It is a backend part for [Video Monkey Website](https://artemmufazalov.github.io/video_monkey).
 
+The server is currently running on Heroku, the app data is stored in MongoDB Atlas Cluster.
+
 It was made using following stack of technologies:
 * Node.js
 * Express.js, MongoDB, mongoose
 * nodemon, nodemailer, jwt
-
+* ...other smaller libs
 ### Run repository on your computer
 Use git clone command to download source code to your computer
 ```
@@ -23,7 +25,8 @@ Sample .env file:
 ### `general settings`
 ```
 NODE_ENV=development / production
-PORT=port number (e.g. to run the app on localhost://5000 should be set to 5000)
+PORT=port number (e.g. to run the app on http://localhost:5000 should be set to 5000)
+FRONTEND_ORIGIN=the url of your website (e.g. http://localhost:3000)
 ```
 ### `jwt configs`
 ```
@@ -50,6 +53,7 @@ In the project directory, you can run:
 ### `npm run start_dev`
 
 Runs a development server on localhost://(port number in configuration file).
+The env configs will be uploaded from the .env file in the project directory
 
 The app uses nodemon, so it will automatically reload if you make any edits.
 
