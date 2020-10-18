@@ -2,6 +2,8 @@
 
 It is a backend part for [Video Monkey Website](https://artemmufazalov.github.io/video_monkey).
 
+Frontend github repository: https://github.com/artemmufazalov/video_monkey
+
 The server is currently running on Heroku, the app data is stored in MongoDB Atlas Cluster.
 
 It was made using following stack of technologies:
