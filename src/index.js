@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
+import rateLimit from "express-rate-limit";
 
 import checkIsAuth from "./middlewares/checkIsAuth.js";
 import UserController from "./controllers/UserController.js"
@@ -10,7 +11,6 @@ import "./core/db.js";
 const app = express();
 
 app.use(bodyParser.json());
-app.use(checkIsAuth);
 
 const corsOptions = {
     origin: true,
@@ -19,6 +19,15 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
+const limiter = rateLimit({
+    windowMs: 10 * 1000, // 10 seconds
+    max: 10 // limit each IP to 10 requests per 10 seconds
+});
+
+app.use(limiter);
+
+app.use(checkIsAuth);
 
 const User = new UserController();
 
