@@ -4,6 +4,7 @@ import UserModel from "../models/User.js";
 
 const checkIsAuth = async (req, res, next) => {
     if (
+        req.method === "OPTIONS" ||
         req.path === "/user/login" ||
         req.path === "/user/register" ||
         req.path.toString().includes("/user/verify")

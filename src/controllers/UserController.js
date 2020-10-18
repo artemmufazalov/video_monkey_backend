@@ -13,12 +13,12 @@ const createConfirmationEmailObject = (emailFrom, emailTo, userName, hash) => {
         subject: "Подтверждение почты для регистрации на Video Monkey",
         html: `<p>Уважаемый <b>${userName}</b>,</p>
                     <p>Для того, чтобы подтвердить почту, использованную при регистрации, перейдите
-                        <a href="https://artemmufazalov.github.io/video_monkey/#/register/verify/submit/${hash}">по этой ссылке</a>.
+                        <a href="${process.env.FRONTEND_ORIGIN}/video_monkey/#/register/verify/submit?hash=${hash}">по этой ссылке</a>.
                     </p>
                     <p>Если вы не регистрировались на сайте 
-                        <a href="https://artemmufazalov.github.io/video_monkey">Video Monkey</a>,
+                        <a href="${process.env.FRONTEND_ORIGIN}">Video Monkey</a>,
                     или это письмо пришло вам по ошибке, перейдите
-                        <a href="https://artemmufazalov.github.io/video_monkey/#/register/verify/reject/${hash}">по этой ссылке</a>.
+                        <a href="${process.env.FRONTEND_ORIGIN}/#/register/verify/reject?hash=${hash}">по этой ссылке</a>.
                     </p>
                     <p>С уважением,<br/>
                     Команда Video Monkey
@@ -69,9 +69,9 @@ class UserController {
                     mailer.sendMail(createConfirmationEmailObject(process.env.VM_NODEMAILER_USER, postData.email, user.name, user.confirmation_hash),
                         (err, info) => {
                             if (err) {
+                                UserModel.findOneAndRemove({_id: user._id});
                                 return res.status(500).json({
-                                    message: "User created successfully",
-                                    nextMessage: "Some server error, email was not sent",
+                                    message: "Some server error, email could not be sent",
                                     user: {...user._doc, _id: "", password: "", tokens: []},
                                     resultCode: 1,
                                 });
@@ -218,7 +218,6 @@ class UserController {
 
         const postData = {
             email: req.body.email,
-            name: req.body.name
         };
 
         UserModel.findOne({email: postData.email}, {}, {}, (err, user) => {
@@ -236,7 +235,7 @@ class UserController {
                         resultCode: 1
                     });
             } else {
-                mailer.sendMail(createConfirmationEmailObject(process.env.VM_NODEMAILER_USER, postData.email, postData.name, user.confirmation_hash),
+                mailer.sendMail(createConfirmationEmailObject(process.env.VM_NODEMAILER_USER, postData.email, user.name, user.confirmation_hash),
                     (err, info) => {
                         if (err) {
                             res.status(500).json({

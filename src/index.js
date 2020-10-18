@@ -1,5 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
+import cors from "cors";
 
 import checkIsAuth from "./middlewares/checkIsAuth.js";
 import UserController from "./controllers/UserController.js"
@@ -10,6 +11,14 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(checkIsAuth);
+
+const corsOptions = {
+    origin: true,
+    methods: ["OPTIONS", "GET", "PUT", "POST", "DELETE"],
+    allowedHeaders: ["Content-Type","Access-Control-Allow-Origin","token"]
+};
+
+app.use(cors(corsOptions));
 
 const User = new UserController();
 
