@@ -13,7 +13,7 @@ const createConfirmationEmailObject = (emailFrom, emailTo, userName, hash) => {
         subject: "Подтверждение почты для регистрации на Video Monkey",
         html: `<p>Уважаемый <b>${userName}</b>,</p>
                     <p>Для того, чтобы подтвердить почту, использованную при регистрации, перейдите
-                        <a href="${process.env.FRONTEND_ORIGIN}/video_monkey/#/register/verify/submit?hash=${hash}">по этой ссылке</a>.
+                        <a href="${process.env.FRONTEND_ORIGIN}/#/register/verify/submit?hash=${hash}">по этой ссылке</a>.
                     </p>
                     <p>Если вы не регистрировались на сайте 
                         <a href="${process.env.FRONTEND_ORIGIN}">Video Monkey</a>,
