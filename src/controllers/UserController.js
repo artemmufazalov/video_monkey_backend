@@ -1,6 +1,7 @@
-import UserModel from "../models/User.js";
 import validate from "../utils/validate.js";
 import mailer from "../core/mailer.js";
+
+import UserModel from "../models/User.js";
 import {findByCredentials, generateAuthToken} from "../models/User.js";
 
 //TODO: add methods for changing password, email or userName

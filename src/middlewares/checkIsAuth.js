@@ -7,6 +7,7 @@ const checkIsAuth = async (req, res, next) => {
         req.method === "OPTIONS" ||
         req.path === "/user/login" ||
         req.path === "/user/register" ||
+        req.path === "/support/complaint" ||
         req.path.toString().includes("/user/verify")
     ) {
         return next();

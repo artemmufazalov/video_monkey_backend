@@ -5,6 +5,8 @@ import rateLimit from "express-rate-limit";
 
 import checkIsAuth from "./middlewares/checkIsAuth.js";
 import UserController from "./controllers/UserController.js"
+import ComplaintController from "./controllers/ComplaintController.js";
+import multerUploader from "./core/multer.js";
 
 import "./core/db.js";
 
@@ -30,6 +32,7 @@ app.use(limiter);
 app.use(checkIsAuth);
 
 const User = new UserController();
+const Complaint = new ComplaintController();
 
 app.post("/user/register", User.create);
 app.delete("/user", User.delete);
@@ -40,7 +43,9 @@ app.delete("/user/logout", User.logout);
 
 app.get("/user/verify", User.verify);
 app.delete("/user/verify", User.cancelRegistration);
-app.post("/user/verify/email", User.resendEmail)
+app.post("/user/verify/email", User.resendEmail);
+
+app.post("/support/complaint",multerUploader.array('attachments'),Complaint.create);
 
 app.listen(process.env.PORT || 6000, () => {
     console.log("Server started at port " + process.env.PORT || 6000);
